@@ -5,17 +5,19 @@
         h-15
         border-b
         bg-gray-900
-        text-light-50
+        text-gray-200
         border-gray-700
         flex
         items-center
         justify-center
+        text-lg
       "
     >
-      =
+      <FaIcon icon="align-left" size="lg" />
     </div>
     <div
       class="
+        h-15
         border-b
         text-gray-500
         border-gray-200
@@ -27,7 +29,14 @@
     >
       {{ projectTitle }}
     </div>
-    <div class="h-150 bg-gray-900" />
+    <div
+      class="h-140 bg-gray-900 text-gray-500 text-lg flex flex-col items-center"
+    >
+      <FaIcon icon="tachometer-alt" class="my-4" />
+      <FaIcon icon="terminal" class="my-4" />
+      <FaIcon icon="code-branch" class="my-4" />
+      <FaIcon icon="cog" class="my-4" />
+    </div>
     <div>
       <slot />
     </div>

@@ -1,14 +1,14 @@
 import { createApp } from "vue";
 import "virtual:windi.css";
-import { library } from "@fortawesome/fontawesome-svg-core";
-import { faCode, faArchive } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import "./main.scss";
+import { FontAwesomeIcon } from "./plugins/FontAwesome";
 import App from "./App.vue";
+import { store } from "./store";
+import ClickOutside from "./plugins/ClickOutside";
 
 const app = createApp(App);
-app.mount("#app");
-
-library.add(faCode, faArchive);
-
+app.use(store);
+ClickOutside(app);
 app.component("FaIcon", FontAwesomeIcon);
+
+app.mount("#app");

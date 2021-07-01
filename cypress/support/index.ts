@@ -14,7 +14,9 @@
 // ***********************************************************
 
 // Import commands.js using ES2015 syntax:
-import './commands'
 
-// Alternatively you can use CommonJS syntax:
-// require('./commands')
+import "virtual:windi.css";
+import "../../src/main.scss";
+import "../../src/plugins/FontAwesome";
+
+import "./commands";
