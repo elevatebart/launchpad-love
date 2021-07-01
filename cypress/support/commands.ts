@@ -27,10 +27,15 @@
 import { mount } from "@cypress/vue";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { VClickOutside } from "../../src/plugins/ClickOutside";
+import { createStore, Store } from "../../src/store";
 
 Cypress.Commands.add(
   "mount",
   (comp: Parameters<typeof mount>[0], options: Parameters<typeof mount>[1]) => {
+    const store = createStore();
+
+    Cypress.store = store;
+
     options = options || {};
     options.global = options.global || {};
 
@@ -39,6 +44,9 @@ Cypress.Commands.add(
 
     options.global.directives = options.global.directives || {};
     options.global.directives["click-outside"] = VClickOutside;
+
+    options.global.plugins = options.global.plugins || [];
+    options.global.plugins.push(store);
 
     return mount(comp, options);
   }
@@ -51,6 +59,9 @@ declare global {
        * Install all vue plugins and globals then mount
        */
       mount: typeof mount;
+    }
+    interface Cypress {
+      store: Store;
     }
   }
 }

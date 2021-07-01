@@ -6,6 +6,9 @@ export default defineConfig({
       gridTemplateColumns: {
         launchpad: "50px 1fr",
       },
+      gridTemplateRows: {
+        launchpad: "70px 1fr",
+      },
     },
   },
   extract: {

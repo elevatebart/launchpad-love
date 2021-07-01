@@ -1,19 +1,28 @@
 <template>
   <div class="text-left relative">
-    <label class="text-gray-800 text-sm my-3 block">{{ name }}</label>
+    <label class="text-gray-800 text-sm my-3 block" :class="disabledClass">{{
+      name
+    }}</label>
     <button
       class="
         text-left
         flex
         justify-between
         items-center
-        border-1 border-gray-300
+        border-1 border-gray-200
         px-2
         py-1
         rounded
         w-full
+        focus:border-indigo-600 focus:outline-transparent
       "
-      @click="isOpen = !isOpen"
+      @click="
+        if (!disabled) {
+          isOpen = !isOpen;
+        }
+      "
+      :class="disabledClass"
+      :disabled="disabled"
       v-click-outside="() => (isOpen = false)"
     >
       <template v-if="selectedOptionObject">
@@ -44,12 +53,11 @@
       class="
         w-full
         absolute
-        p-2
         bg-white
-        border-1 border-gray-300 border-t-gray-100
+        border-1 border-indigo-600 border-t-1 border-t-gray-100
         rounded-b
         flex flex-col
-        gap-3
+        gap-0
         z-10
       "
       style="margin-top: -3px"
@@ -59,7 +67,7 @@
         :key="opt.id"
         @click="selectOption(opt)"
         focus="1"
-        class="cursor-pointer flex items-center"
+        class="cursor-pointer flex items-center py-1 px-2 hover:bg-gray-10"
       >
         <img
           :src="logos[`../assets/logos/${opt.logo}.svg`]?.default"
@@ -79,7 +87,6 @@
 <script lang="ts">
 import { computed, defineComponent, PropType, Ref, ref } from "vue";
 
-// FIXME: vite specific trick
 const logos = import.meta.globEager("../assets/logos/*.svg");
 interface Option {
   name: string;
@@ -109,6 +116,10 @@ export default defineComponent({
       type: Array as PropType<Array<Option>>,
       required: true,
     },
+    disabled: {
+      type: Boolean,
+      default: false,
+    },
   },
   setup(props, { emit }) {
     const isOpen = ref(false);
@@ -121,11 +132,16 @@ export default defineComponent({
       emit("select", opt);
     };
 
+    const disabledClass = computed(() =>
+      props.disabled ? "opacity-50" : undefined
+    );
+
     return {
       logos,
       isOpen,
       selectedOptionObject,
       selectOption,
+      disabledClass,
     };
   },
 });

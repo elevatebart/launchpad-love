@@ -1,8 +1,15 @@
 <template>
-  <div class="grid grid-cols-launchpad bg-white relative text-center">
+  <div
+    class="
+      min-h-screen
+      grid grid-cols-launchpad grid-rows-launchpad
+      bg-white
+      relative
+      text-center
+    "
+  >
     <div
       class="
-        h-15
         border-b
         bg-gray-900
         text-gray-200
@@ -17,7 +24,6 @@
     </div>
     <div
       class="
-        h-15
         border-b
         text-gray-500
         border-gray-200
@@ -29,9 +35,7 @@
     >
       {{ projectTitle }}
     </div>
-    <div
-      class="h-140 bg-gray-900 text-gray-500 text-lg flex flex-col items-center"
-    >
+    <div class="bg-gray-900 text-gray-500 text-lg flex flex-col items-center">
       <FaIcon icon="tachometer-alt" class="my-4" />
       <FaIcon icon="terminal" class="my-4" />
       <FaIcon icon="code-branch" class="my-4" />

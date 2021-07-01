@@ -1,31 +1,5 @@
-export type TestingType = "e2e" | "component";
+import { BundlerId } from "./bundler";
 
-export const testingTypes: TestingType[] = ["e2e", "component"];
-
-export type Bundler = {
-  id: BundlerId;
-  name: string;
-  logo: string;
-};
-
-export const SupportedBundlerWebpack: Bundler = {
-  id: "webpack",
-  name: "Webpack",
-  logo: "webpack",
-};
-
-export const SupportedBundlerVite: Bundler = {
-  id: "vite",
-  name: "ViteJs",
-  logo: "vite",
-};
-
-export const supportedBundlers: Bundler[] = [
-  SupportedBundlerWebpack,
-  SupportedBundlerVite,
-];
-
-type BundlerId = "webpack" | "vite";
 type Library = "vue" | "react";
 
 export type Framework = {
@@ -77,7 +51,7 @@ export const SupportedFrameworkVue: Framework = {
 
 export const SupportedFrameworkReact: Framework = {
   id: "react",
-  name: "React",
+  name: "ReactJs",
   library: "react",
   logo: "react",
 };

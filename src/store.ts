@@ -1,15 +1,23 @@
-import { Bundler, Framework, TestingType } from "./statics";
 import { reactive, readonly, inject, App } from "vue";
+import { Bundler } from "./statics/bundler";
+import { Framework } from "./statics/frameworks";
+import { TestingType } from "./statics/testingTypes";
+
+type ComponentSetup = {
+  framework: Framework;
+  bundler: Bundler;
+  complete: boolean;
+};
 
 interface State {
   title: string;
   description: string;
   testingType?: TestingType;
   firstOpen: boolean;
-  component: {
-    framework?: Framework;
-    bundler?: Bundler;
-  };
+  component?: ComponentSetup;
+  nextAction: () => void;
+  backAction: () => void;
+  alternativeAction?: () => void;
 }
 
 function createInitialState(): State {
@@ -18,16 +26,14 @@ function createInitialState(): State {
     description:
       "Before we get started with testing your project, please confirm which method of testing you would like to use for the initial tests that you’ll be writing.",
     firstOpen: true,
-    testingType: undefined,
-    component: {
-      framework: undefined,
-    },
+    nextAction() {},
+    backAction() {},
   };
 }
 
 const storeKey = Symbol("store");
 
-class Store {
+export class Store {
   private state: State;
 
   install(app: App) {
@@ -47,16 +53,30 @@ class Store {
     this.state.description = meta.description;
   }
 
-  setTestingType(testingType: TestingType) {
+  setTestingType(testingType?: TestingType) {
     this.state.testingType = testingType;
   }
 
-  setComponentFramework(framework: Framework) {
-    this.state.component.framework = framework;
+  setComponentSetup(options: ComponentSetup) {
+    this.state.component = options;
   }
 
-  setComponentBundler(bundler: Bundler) {
-    this.state.component.bundler = bundler;
+  resetComponentSetup() {
+    if (this.state.component) {
+      this.state.component.complete = false;
+    }
+  }
+
+  setNextFunction(newNext: () => void) {
+    this.state.nextAction = newNext;
+  }
+
+  setBackFunction(newBack: () => void) {
+    this.state.backAction = newBack;
+  }
+
+  setAltFunction(newAlt: () => void) {
+    this.state.alternativeAction = newAlt;
   }
 }
 
