@@ -25,12 +25,13 @@
     <div
       class="
         border-b
-        text-gray-500
+        text-gray-600
         border-gray-200
         flex
         items-center
         text-left
-        px-4
+        px-5
+        text-sm
       "
     >
       {{ projectTitle }}

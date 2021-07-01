@@ -7,7 +7,7 @@
     <div class="p-5">
       <h2 class="text-indigo-600">{{ pkg.name }}</h2>
       <p class="text-gray-400 text-sm">
-        Allows Cypress to mount each Vue component using cy.mount()
+        {{ pkg.description }}
       </p>
     </div>
   </div>
@@ -15,23 +15,8 @@
 
 <script lang="ts">
 import { computed, defineComponent } from "vue";
-import { Bundler } from "../statics/bundler";
-import { Framework } from "../statics/frameworks";
+import { getPackages } from "../statics/packages";
 import { useStore } from "../store";
-
-function getPackages(framework: Framework, bundler: Bundler) {
-  const libraryPackage = `@cypress/${framework.library}`;
-  const bundlerPackage = `@cypress/${bundler.id}-dev-server`;
-
-  return [
-    {
-      name: libraryPackage,
-    },
-    {
-      name: bundlerPackage,
-    },
-  ];
-}
 
 export default defineComponent({
   setup() {

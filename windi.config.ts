@@ -4,7 +4,7 @@ export default defineConfig({
   theme: {
     extend: {
       gridTemplateColumns: {
-        launchpad: "50px 1fr",
+        launchpad: "70px 1fr",
       },
       gridTemplateRows: {
         launchpad: "70px 1fr",
