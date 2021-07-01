@@ -8,7 +8,7 @@ describe("<ButtonBar />", () => {
   });
 
   it("should trigger the next function", () => {
-    cy.mount(() => <ButtonBar />).then(() => {
+    cy.mount(() => <ButtonBar next="Next Step" back="Back" />).then(() => {
       const nextFunction = cy.spy();
       Cypress.store.setNextFunction(nextFunction);
       cy.contains("Next Step")

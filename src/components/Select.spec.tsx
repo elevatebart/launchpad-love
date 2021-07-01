@@ -70,6 +70,7 @@ describe("<BigSelect />", () => {
         name="Front-end Framework"
         options={manyOptions}
         value={val.value}
+        // @ts-ignore
         onSelect={(newVal: Framework) => {
           val.value = newVal.id;
         }}

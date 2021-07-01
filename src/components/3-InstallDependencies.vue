@@ -13,7 +13,6 @@ import PackagesList from "./PackagesList.vue";
 import ManualInstall from "./ManualInstall.vue";
 
 function installIt() {}
-function goToInstall() {}
 
 export default defineComponent({
   components: {
