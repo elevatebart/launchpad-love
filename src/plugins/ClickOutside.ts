@@ -1,7 +1,7 @@
 import { App, DirectiveBinding } from "vue";
 
 export const VClickOutside = {
-  beforeMount: function (el: any, binding: DirectiveBinding<any>) {
+  beforeMount(el: any, binding: DirectiveBinding<any>) {
     // Define ourClickEventHandler
     const ourClickEventHandler = (event: MouseEvent) => {
       if (!el.contains(event.target) && el !== event.target) {
@@ -10,13 +10,14 @@ export const VClickOutside = {
         binding.value(event); // before binding it
       }
     };
+
     // attached the handler to the element so we can remove it later easily
     el.__vueClickEventHandler__ = ourClickEventHandler;
 
     // attaching ourClickEventHandler to a listener on the document here
     document.addEventListener("click", ourClickEventHandler);
   },
-  unmounted: function (el: any) {
+  unmounted(el: any) {
     // Remove Event Listener
     document.removeEventListener("click", el.__vueClickEventHandler__);
   },

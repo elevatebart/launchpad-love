@@ -15,19 +15,24 @@
 
 <script lang="ts">
 import { computed, defineComponent } from "vue";
-import { getPackages } from "../statics/packages";
+import { getPackages } from "../utils/packages";
 import { useStore } from "../store";
+
+export function listPackages() {
+  const store = useStore();
+  const framework = computed(() => store.getState().component?.framework);
+  const bundler = computed(() => store.getState().component?.bundler);
+  const listOfNecessaryPackages = computed(() =>
+    framework.value && bundler.value
+      ? getPackages(framework.value, bundler.value)
+      : []
+  );
+  return listOfNecessaryPackages;
+}
 
 export default defineComponent({
   setup() {
-    const store = useStore();
-    const framework = computed(() => store.getState().component?.framework);
-    const bundler = computed(() => store.getState().component?.bundler);
-    const listOfNecessaryPackages = getPackages(
-      framework.value!,
-      bundler.value!
-    );
-    return { listOfNecessaryPackages };
+    return { listOfNecessaryPackages: listPackages() };
   },
 });
 </script>

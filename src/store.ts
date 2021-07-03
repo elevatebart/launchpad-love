@@ -1,7 +1,7 @@
 import { reactive, readonly, inject, App } from "vue";
-import { Bundler } from "./statics/bundler";
-import { Framework } from "./statics/frameworks";
-import { TestingType } from "./statics/testingTypes";
+import { Bundler } from "./utils/bundler";
+import { Framework } from "./utils/frameworks";
+import { TestingType } from "./utils/testingTypes";
 
 type ComponentSetup = {
   framework: Framework;
@@ -10,6 +10,8 @@ type ComponentSetup = {
 };
 
 interface State {
+  complete: boolean;
+  projectTitle: string;
   title: string;
   description: string;
   testingType?: TestingType;
@@ -18,16 +20,19 @@ interface State {
   nextAction: () => void;
   backAction: () => void;
   alternativeAction?: () => void;
+  dependenciesInstalled: boolean;
 }
 
 function createInitialState(): State {
   return {
-    title: "Welcome to Cypress",
-    description:
-      "Before we get started with testing your project, please confirm which method of testing you would like to use for the initial tests that you’ll be writing.",
+    projectTitle: "design-system",
+    title: "LaunchPad",
+    description: "Scaffold Cypress Tests",
     firstOpen: true,
     nextAction() {},
     backAction() {},
+    dependenciesInstalled: false,
+    complete: false,
   };
 }
 
@@ -67,16 +72,24 @@ export class Store {
     }
   }
 
-  setNextFunction(newNext: () => void) {
+  onNext(newNext: () => void) {
     this.state.nextAction = newNext;
   }
 
-  setBackFunction(newBack: () => void) {
+  onBack(newBack: () => void) {
     this.state.backAction = newBack;
   }
 
-  setAltFunction(newAlt: () => void) {
+  onAlt(newAlt: () => void) {
     this.state.alternativeAction = newAlt;
+  }
+
+  flagDependenciesInstalled(flag = true) {
+    this.state.dependenciesInstalled = flag;
+  }
+
+  finishSetup() {
+    this.state.complete = true;
   }
 }
 

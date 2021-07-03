@@ -6,13 +6,15 @@
         @select="setFEFramework"
         :options="frameworks"
         :value="selectedFrameworkId"
+        placeholder="Pick a framework"
       />
       <Select
         name="Bundler"
+        v-if="!hiddenBundlerSelect"
         @select="setFEBundler"
         :options="bundlers"
         :value="selectedBundlerId"
-        :disabled="disabledBundlerSelect"
+        placeholder="Pick a bundler"
       />
     </div>
   </WizardLayout>
@@ -24,8 +26,8 @@ import WizardLayout from "./WizardLayout.vue";
 import Select from "./Select.vue";
 
 import { useStore } from "../store";
-import { Framework, supportedFrameworks } from "../statics/frameworks";
-import { Bundler, supportedBundlers } from "../statics/bundler";
+import { Framework, supportedFrameworks } from "../utils/frameworks";
+import { Bundler, supportedBundlers } from "../utils/bundler";
 
 export default defineComponent({
   components: { WizardLayout, Select },
@@ -54,11 +56,11 @@ export default defineComponent({
           "Confirm the front-end framework and bundler used in your project.",
       });
 
-      store.setBackFunction(() => {
+      store.onBack(() => {
         store.setTestingType(undefined);
       });
 
-      store.setNextFunction(() => {
+      store.onNext(() => {
         if (!selectedFramework.value || !selectedBundler.value) {
           return;
         }
@@ -72,15 +74,13 @@ export default defineComponent({
       const initialComponent = store.getState().component;
 
       if (initialComponent) {
-        selectedFramework.value = initialComponent.framework;
-        selectedFrameworkId.value = initialComponent.framework.id;
-        selectedBundler.value = initialComponent.bundler;
-        selectedBundlerId.value = initialComponent.bundler.id;
+        setFEFramework(initialComponent.framework);
+        setFEBundler(initialComponent.bundler);
       }
     });
 
     const fwBundlerId = computed(() => selectedFramework?.value?.bundler);
-    const disabledBundlerSelect = ref(false);
+    const hiddenBundlerSelect = ref(false);
 
     const setFEBundler = (bundler: Bundler) => {
       selectedBundler.value = bundler;
@@ -100,7 +100,7 @@ export default defineComponent({
     const setFEFramework = (framework: Framework) => {
       selectedFrameworkId.value = framework.id;
       selectedFramework.value = framework;
-      disabledBundlerSelect.value = !!fwBundlerId.value;
+      hiddenBundlerSelect.value = !!fwBundlerId.value;
       if (fwBundlerId.value) {
         const foundBundler = supportedBundlers.find(
           (bund) => bund.id === fwBundlerId.value
@@ -128,7 +128,7 @@ export default defineComponent({
       selectedFrameworkId,
       bundlers,
       selectedBundlerId,
-      disabledBundlerSelect,
+      hiddenBundlerSelect,
     };
   },
 });

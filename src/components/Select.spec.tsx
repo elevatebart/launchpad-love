@@ -1,5 +1,5 @@
 import { ref } from "vue";
-import { Framework } from "../statics/frameworks";
+import { Framework } from "../utils/frameworks";
 import Select from "./Select.vue";
 
 const manyOptions = [
@@ -17,7 +17,7 @@ const manyOptions = [
 ];
 
 describe("<BigSelect />", () => {
-  it.only("playground", () => {
+  it("playground", () => {
     cy.mount(() => (
       <div class="m-10">
         <Select
@@ -65,6 +65,7 @@ describe("<BigSelect />", () => {
 
   it("should select the clicked item", () => {
     let val = ref("react");
+
     cy.mount(() => (
       <Select
         name="Front-end Framework"

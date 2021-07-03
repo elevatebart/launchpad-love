@@ -5,6 +5,7 @@
     }}</label>
     <button
       class="
+        h-10
         text-left
         flex
         justify-between
@@ -42,11 +43,11 @@
           {{ selectedOptionObject.description }}
         </span>
       </template>
-      <span>
+      <span v-else class="text-gray-400">
         {{ placeholder }}
       </span>
       <span class="flex-grow"></span>
-      <FaIcon icon="chevron-down" size="xs" class="w-3 my-2 text-gray-500" />
+      <i-fa-angle-down />
     </button>
     <ul
       v-if="isOpen"
@@ -85,7 +86,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, PropType, Ref, ref } from "vue";
+import { computed, defineComponent, PropType, ref } from "vue";
 
 const logos = import.meta.globEager("../assets/logos/*.svg");
 interface Option {
@@ -96,7 +97,7 @@ interface Option {
 }
 
 export default defineComponent({
-  emits: ["select"],
+  emits: { select: Object },
   props: {
     name: {
       type: String,

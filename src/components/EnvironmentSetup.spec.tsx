@@ -1,4 +1,4 @@
-import EnvironmentSetup from "./2-EnvironmentSetup.vue";
+import EnvironmentSetup from "./EnvironmentSetup.vue";
 
 describe("<EnvironmentSetup />", () => {
   it("playground", { viewportWidth: 800 }, () => {
@@ -19,7 +19,13 @@ describe("<EnvironmentSetup />", () => {
     ));
 
     cy.contains("NuxtJs").should("exist");
-    cy.contains("Webpack").should("exist");
+    cy.contains("Next Step")
+      .click()
+      .then(() => {
+        expect(Cypress.store.getState().component?.bundler.id).to.equal(
+          "webpack"
+        );
+      });
   });
 
   it("should allow to change bundler if not set by framework", () => {
@@ -34,16 +40,31 @@ describe("<EnvironmentSetup />", () => {
     cy.contains("Webpack").click();
     cy.contains("ViteJs").click();
     cy.contains("ViteJs").should("exist");
+    cy.contains("Next Step")
+      .click()
+      .then(() => {
+        expect(Cypress.store.getState().component?.bundler.id).to.equal("vite");
+      });
   });
 
-  it("should not allow to change bundler if set by framework", () => {
+  it("should reset the bundler if set by new framework", () => {
     cy.mount(() => (
       <div class="m-10">
-        <EnvironmentSetup detectedFramework="nuxt" />
+        <EnvironmentSetup detectedFramework="vue" />
       </div>
     ));
 
-    cy.contains("Webpack").click({ force: true });
-    cy.contains("ViteJs").should("not.exist");
+    cy.contains("a bundler").click();
+    cy.contains("ViteJs").click();
+    cy.contains("ViteJs").should("exist");
+    cy.contains("VueJs").click();
+    cy.contains("Nuxt").click();
+    cy.contains("Next Step")
+      .click()
+      .then(() => {
+        expect(Cypress.store.getState().component?.bundler.id).to.equal(
+          "webpack"
+        );
+      });
   });
 });

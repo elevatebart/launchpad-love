@@ -5,7 +5,6 @@
       grid grid-cols-launchpad grid-rows-launchpad
       bg-white
       relative
-      text-center
     "
   >
     <div
@@ -20,7 +19,7 @@
         text-lg
       "
     >
-      <FaIcon icon="align-left" size="lg" />
+      <i-clarity-menu-line class="p-3 h-13 w-13" />
     </div>
     <div
       class="
@@ -36,11 +35,14 @@
     >
       {{ projectTitle }}
     </div>
-    <div class="bg-gray-900 text-gray-500 text-lg flex flex-col items-center">
-      <FaIcon icon="tachometer-alt" class="my-4" />
-      <FaIcon icon="terminal" class="my-4" />
-      <FaIcon icon="code-branch" class="my-4" />
-      <FaIcon icon="cog" class="my-4" />
+    <div class="bg-gray-900 text-gray-500 flex flex-col items-stretch">
+      <SideBarItem
+        v-for="i in sideMenuDefinition"
+        :icon="i.icon"
+        :active="!!i.active"
+      />
+      <div class="flex-grow" />
+      <img src="../assets/cypress_s.png" class="m-5 w-7" />
     </div>
     <div>
       <slot />
@@ -49,13 +51,26 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { computed, defineComponent } from "vue";
+import { useStore } from "../store";
+
+import SideBarItem from "./SideBarItem.vue";
 
 export default defineComponent({
+  components: {
+    SideBarItem,
+  },
   setup() {
-    const projectTitle = "Project title";
+    const store = useStore();
+    const projectTitle = computed(() => store.getState().projectTitle);
 
-    return { projectTitle };
+    const sideMenuDefinition = [
+      { icon: "clarity:dashboard-line" },
+      { icon: "clarity-terminal-line" },
+      { icon: "clarity-settings-line", active: true },
+    ];
+
+    return { projectTitle, sideMenuDefinition };
   },
 });
 </script>

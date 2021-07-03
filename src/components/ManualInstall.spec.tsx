@@ -1,10 +1,14 @@
 import { SupportedBundlerWebpack } from "../utils/bundler";
 import { SupportedFrameworkNext } from "../utils/frameworks";
-import PackagesList from "./PackagesList.vue";
+import ManualInstall from "./ManualInstall.vue";
 
-describe("<PackagesList />", () => {
-  it("playground", () => {
-    cy.mount(() => <PackagesList />).then(() => {
+describe("<ManualInstall />", () => {
+  it("playground", { viewportWidth: 800, viewportHeight: 600 }, () => {
+    cy.mount(() => (
+      <div class="m-10 border-1 rounded border-gray-400">
+        <ManualInstall />
+      </div>
+    )).then(() => {
       Cypress.store.setComponentSetup({
         bundler: SupportedBundlerWebpack,
         framework: SupportedFrameworkNext,

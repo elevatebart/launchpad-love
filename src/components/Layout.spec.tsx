@@ -1,4 +1,4 @@
-import Layout from "./layout.vue";
+import Layout from "./Layout.vue";
 
 describe("<Layout />", () => {
   it("playground", { viewportWidth: 1280, viewportHeight: 1024 }, () => {

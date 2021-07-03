@@ -1,7 +1,7 @@
 <template>
-  <WizardLayout :next="nextButtonName" :alt="altButtonName">
+  <WizardLayout :next="nextButtonName" alt="Install manually">
     <PackagesList v-if="!manualInstall" />
-    <ManualInstall v-else />
+    <ManualInstall v-else @back="manualInstall = false" />
   </WizardLayout>
 </template>
 
@@ -11,8 +11,6 @@ import { useStore } from "../store";
 import WizardLayout from "./WizardLayout.vue";
 import PackagesList from "./PackagesList.vue";
 import ManualInstall from "./ManualInstall.vue";
-
-function installIt() {}
 
 export default defineComponent({
   components: {
@@ -26,11 +24,6 @@ export default defineComponent({
     const nextButtonName = computed(() =>
       manualInstall.value ? "I've installed them" : "Install"
     );
-    const altButtonName = computed(() =>
-      manualInstall.value
-        ? "Install automatically"
-        : "Install these packages manually"
-    );
     onMounted(() => {
       store.setMeta({
         title: "Install Dev Dependencies",
@@ -38,19 +31,22 @@ export default defineComponent({
           "We need to install the following packages in order for component testing to work.",
       });
 
-      store.setAltFunction(() => {
-        manualInstall.value = true;
+      store.onAlt(() => {
+        manualInstall.value = !manualInstall.value;
       });
 
-      store.setBackFunction(() => {
+      store.onBack(() => {
         store.resetComponentSetup();
       });
 
-      store.setNextFunction(() => {
-        installIt();
+      store.onNext(() => {
+        if (manualInstall.value) {
+          store.flagDependenciesInstalled();
+        } else {
+        }
       });
     });
-    return { manualInstall, nextButtonName, altButtonName };
+    return { manualInstall, nextButtonName };
   },
 });
 </script>
